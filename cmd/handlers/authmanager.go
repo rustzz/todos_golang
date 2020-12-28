@@ -34,6 +34,8 @@ func SigninUser(writer http.ResponseWriter, request *http.Request) {
 	db := database.ConnectDatabase()
 	db.Table("users").Model(&models.User{}).Where("username = ?", user_local.Username).
 		Update("token", token)
+	dbConn, _ := db.DB()
+	dbConn.Close()
 
 	json.NewEncoder(writer).Encode(map[string]interface{}{"ok": true, "token": token})
 	return
@@ -62,6 +64,8 @@ func SignupUser(writer http.ResponseWriter, request *http.Request) {
 		Username: user_local.Username,
 		Password: user_local.Password,
 		Token:    token})
+	dbConn, _ := db.DB()
+	dbConn.Close()
 
 	json.NewEncoder(writer).Encode(map[string]interface{}{"ok": true, "token": token})
 	return

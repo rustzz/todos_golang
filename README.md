@@ -12,3 +12,6 @@ export DB_DSN="username:password@tcp(127.0.0.1:3306)/database"
 
 ##### Модели баз данных находятся в
 > `internal/models/models.go`
+
+##### Изменение конфигурации Ratelimit (запросы в МИНУТУ) указываются в
+> `pkg/ratelimit/ratelimit.go`

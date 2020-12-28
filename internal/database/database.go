@@ -14,7 +14,13 @@ func ConnectDatabase() (db *gorm.DB) {
 	if err != nil {
 		panic("Failed to connect database")
 	}
+	return db
+}
+
+func Migrate() {
+	db := ConnectDatabase()
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Note{})
-	return db
+	dbConn, _ := db.DB()
+	dbConn.Close()
 }

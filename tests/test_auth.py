@@ -10,10 +10,12 @@ def signup():
     response = requests.post(f"{host}/am/signup", params={
         "username": username, "password": password
     })
+    print(response.text)
     return username, password, response.json()
 
 def signin(username, password):
     response = requests.post(f"{host}/am/signin", params={
         "username": username, "password": password
     })
+    print(response.text)
     return response.json()

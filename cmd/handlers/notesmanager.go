@@ -39,6 +39,8 @@ func GetNotes(writer http.ResponseWriter, request *http.Request) {
 		response[strconv.Itoa(id)] = map[string]interface{}{
 			"title": title, "text": text, "checked": checked}
 	}
+	dbConn, _ := db.DB()
+	dbConn.Close()
 
 	json.NewEncoder(writer).Encode(map[string]interface{}{
 		"ok": true, "notes": response})
@@ -61,6 +63,8 @@ func AddNote(writer http.ResponseWriter, request *http.Request) {
 	db := database.ConnectDatabase()
 	db.Table("notes").Create(&models.Data{
 		Owner: user_local.Username})
+	dbConn, _ := db.DB()
+	dbConn.Close()
 
 	json.NewEncoder(writer).Encode(map[string]interface{}{"ok": true})
 	return
@@ -88,6 +92,8 @@ func DeleteNote(writer http.ResponseWriter, request *http.Request) {
 	}
 	db.Table("notes").Where("owner = ?", user_local.Username).
 		Delete(&models.Data{}, "id = ?", data.ID)
+	dbConn, _ := db.DB()
+	dbConn.Close()
 
 	json.NewEncoder(writer).Encode(map[string]interface{}{"ok": true})
 	return
@@ -115,6 +121,8 @@ func UpdateNote(writer http.ResponseWriter, request *http.Request) {
 	}
 	db.Table("notes").Where("owner = ?", user_local.Username).Where("id = ?", data.ID).
 		Updates(&models.Data{Title: data.Title, Text: data.Text, Checked: data.Checked})
+	dbConn, _ := db.DB()
+	dbConn.Close()
 
 	json.NewEncoder(writer).Encode(map[string]interface{}{"ok": true})
 	return

@@ -16,8 +16,12 @@ func UserExists(user *models.User) bool {
 	if err := db.Table("users").
 		First(&userDB, "username = ?", user.Username).Error; err != nil {
 
+		dbConn, _ := db.DB()
+		dbConn.Close()
 		return false
 	}
+	dbConn, _ := db.DB()
+	dbConn.Close()
 	return true
 }
 
@@ -50,10 +54,16 @@ func PasswordValid(user *models.User) bool {
 		Find(&userDB).Error; err == nil {
 
 		if userDB.Password == user.Password {
+			dbConn, _ := db.DB()
+			dbConn.Close()
 			return true
 		}
+		dbConn, _ := db.DB()
+		dbConn.Close()
 		return false
 	}
+	dbConn, _ := db.DB()
+	dbConn.Close()
 	return false
 }
 
@@ -64,10 +74,16 @@ func TokenValid(user *models.User) bool {
 		Find(&userDB).Error; err == nil {
 
 		if userDB.Token == user.Token {
+			dbConn, _ := db.DB()
+			dbConn.Close()
 			return true
 		}
+		dbConn, _ := db.DB()
+		dbConn.Close()
 		return false
 	}
+	dbConn, _ := db.DB()
+	dbConn.Close()
 	return false
 }
 
