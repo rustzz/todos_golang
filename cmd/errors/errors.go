@@ -25,5 +25,8 @@ func GetErrorsData() *Errors {
 
 		NOTEBOOK_DATA_NOT_VALID: map[string]interface{}{
 			"ok": false, "message": "Wrong request, recheck API docs"},
+
+		TOKEN_NOT_VALID_ERROR: map[string]interface{}{
+			"ok": false, "message": "Token not valid"},
 	}
 }

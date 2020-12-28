@@ -1,8 +1,6 @@
 package checkers
 
 import (
-	"encoding/json"
-	"net/http"
 	"strings"
 
 	errs "github.com/rustzz/todos/cmd/errors"
@@ -73,21 +71,38 @@ func TokenValid(user *models.User) bool {
 	return false
 }
 
-func NotebookCheckerCoollection(user *models.User,
-	writer http.ResponseWriter) {
-
-	if !DataValid(user, "notebook") {
-		json.NewEncoder(writer).Encode(api_errors.NOTEBOOK_DATA_NOT_VALID)
-		return
+func NotebookCheckerCoollection(user *models.User, method string) interface{} {
+	if method == "notebook" {
+		if !DataValid(user, "notebook") {
+			return api_errors.NOTEBOOK_DATA_NOT_VALID
+		}
+		if !UserExists(user) {
+			return api_errors.USER_NOT_EXISTS_ERROR
+		}
+		if !TokenValid(user) {
+			return api_errors.TOKEN_NOT_VALID_ERROR
+		}
+		return nil
 	}
 
-	if !UserExists(user) {
-		json.NewEncoder(writer).Encode(api_errors.USER_NOT_EXISTS_ERROR)
-		return
+	// auth
+	if !DataValid(user, "am") {
+		return api_errors.DATA_EMPTY_ERROR
 	}
-
-	if !TokenValid(user) {
-		json.NewEncoder(writer).Encode(api_errors.TOKEN_NOT_VALID_ERROR)
-		return
+	if method == "am_signup" {
+		if UserExists(user) {
+			return api_errors.USER_EXISTS_ERROR
+		}
+		return nil
 	}
+	if method == "am_signin" {
+		if !UserExists(user) {
+			return api_errors.USER_NOT_EXISTS_ERROR
+		}
+		if !PasswordValid(user) {
+			return api_errors.PASSWORD_NOT_VALID_ERROR
+		}
+		return nil
+	}
+	return nil
 }

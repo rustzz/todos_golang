@@ -25,7 +25,7 @@ def update(username, token, data):
     return response.json()
 
 def delete(username, token, data):
-    response = requests.post(f"{host}/notebook/update", params={
+    response = requests.post(f"{host}/notebook/delete", params={
         "username": username, "token": token
     }, json={
         "id": int(data["id"])

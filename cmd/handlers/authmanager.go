@@ -20,18 +20,9 @@ func SigninUser(writer http.ResponseWriter, request *http.Request) {
 		Username: request.FormValue("username"),
 		Password: request.FormValue("password")}
 
-	if !checkers.DataValid(&user_local, "am") {
-		json.NewEncoder(writer).Encode(api_errors.DATA_EMPTY_ERROR)
-		return
-	}
-
-	if !checkers.UserExists(&user_local) {
-		json.NewEncoder(writer).Encode(api_errors.USER_NOT_EXISTS_ERROR)
-		return
-	}
-
-	if !checkers.PasswordValid(&user_local) {
-		json.NewEncoder(writer).Encode(api_errors.PASSWORD_NOT_VALID_ERROR)
+	checkerr := checkers.NotebookCheckerCoollection(&user_local, "am_signin")
+	if checkerr != nil {
+		json.NewEncoder(writer).Encode(checkerr)
 		return
 	}
 
@@ -55,13 +46,9 @@ func SignupUser(writer http.ResponseWriter, request *http.Request) {
 		Username: request.FormValue("username"),
 		Password: request.FormValue("password")}
 
-	if !checkers.DataValid(&user_local, "am") {
-		json.NewEncoder(writer).Encode(api_errors.DATA_EMPTY_ERROR)
-		return
-	}
-
-	if checkers.UserExists(&user_local) {
-		json.NewEncoder(writer).Encode(api_errors.USER_EXISTS_ERROR)
+	checkerr := checkers.NotebookCheckerCoollection(&user_local, "am_signup")
+	if checkerr != nil {
+		json.NewEncoder(writer).Encode(checkerr)
 		return
 	}
 

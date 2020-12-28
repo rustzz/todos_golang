@@ -17,7 +17,11 @@ func GetNotes(writer http.ResponseWriter, request *http.Request) {
 		Username: request.FormValue("username"),
 		Token:    request.FormValue("token")}
 
-	checkers.NotebookCheckerCoollection(&user_local, writer)
+	checkerr := checkers.NotebookCheckerCoollection(&user_local, "notebook")
+	if checkerr != nil {
+		json.NewEncoder(writer).Encode(checkerr)
+		return
+	}
 
 	db := database.ConnectDatabase()
 	var response = make(map[string]map[string]interface{})
@@ -38,6 +42,7 @@ func GetNotes(writer http.ResponseWriter, request *http.Request) {
 
 	json.NewEncoder(writer).Encode(map[string]interface{}{
 		"ok": true, "notes": response})
+	return
 }
 
 func AddNote(writer http.ResponseWriter, request *http.Request) {
@@ -47,7 +52,11 @@ func AddNote(writer http.ResponseWriter, request *http.Request) {
 		Username: request.FormValue("username"),
 		Token:    request.FormValue("token")}
 
-	checkers.NotebookCheckerCoollection(&user_local, writer)
+	checkerr := checkers.NotebookCheckerCoollection(&user_local, "notebook")
+	if checkerr != nil {
+		json.NewEncoder(writer).Encode(checkerr)
+		return
+	}
 
 	db := database.ConnectDatabase()
 	db.Table("notes").Create(&models.Data{
@@ -60,12 +69,15 @@ func AddNote(writer http.ResponseWriter, request *http.Request) {
 // to fix: returns "ok: true" if nothing deleted
 func DeleteNote(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
-
 	var user_local = models.User{
 		Username: request.FormValue("username"),
 		Token:    request.FormValue("token")}
 
-	checkers.NotebookCheckerCoollection(&user_local, writer)
+	checkerr := checkers.NotebookCheckerCoollection(&user_local, "notebook")
+	if checkerr != nil {
+		json.NewEncoder(writer).Encode(checkerr)
+		return
+	}
 
 	db := database.ConnectDatabase()
 	var data models.Data
@@ -88,7 +100,11 @@ func UpdateNote(writer http.ResponseWriter, request *http.Request) {
 		Username: request.FormValue("username"),
 		Token:    request.FormValue("token")}
 
-	checkers.NotebookCheckerCoollection(&user_local, writer)
+	checkerr := checkers.NotebookCheckerCoollection(&user_local, "notebook")
+	if checkerr != nil {
+		json.NewEncoder(writer).Encode(checkerr)
+		return
+	}
 
 	db := database.ConnectDatabase()
 	var data models.Data
