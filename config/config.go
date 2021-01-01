@@ -7,8 +7,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Load : ...
 func Load() {
-	// setting environment
 	user, err := user.Current()
 	if err != nil {
 		panic(err)

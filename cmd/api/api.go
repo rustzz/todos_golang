@@ -21,6 +21,9 @@ func main() {
 	routing.InitRoutes(handler)
 
 	log.Print("Server starting...")
-	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s", os.Getenv("API_HOST")), ratelimit.Check(handler)))
+	log.Fatal(
+		http.ListenAndServe(fmt.Sprintf("%s", os.Getenv("API_HOST")),
+			ratelimit.Check(handler),
+		))
 	return
 }

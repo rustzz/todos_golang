@@ -7,6 +7,7 @@ import (
 	"github.com/rustzz/todos/cmd/handlers"
 )
 
+// InitRoutes : ...
 func InitRoutes(handler *mux.Router) {
 	handler.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 		writer.Write([]byte(""))

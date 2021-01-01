@@ -8,6 +8,7 @@ import (
 	"github.com/didip/tollbooth/limiter"
 )
 
+// Check : ...
 func Check(next http.Handler) http.Handler {
 	/*
 	 * NewLimiter(кол-во запросов, в какой промежуток времени)

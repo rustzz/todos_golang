@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// ConnectDatabase : ...
 func ConnectDatabase() (db *gorm.DB) {
 	dsn := os.Getenv("DB_DSN")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -17,10 +18,12 @@ func ConnectDatabase() (db *gorm.DB) {
 	return db
 }
 
+// Migrate : ...
 func Migrate() {
 	db := ConnectDatabase()
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Note{})
 	dbConn, _ := db.DB()
 	dbConn.Close()
+	return
 }

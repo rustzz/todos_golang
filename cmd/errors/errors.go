@@ -1,32 +1,40 @@
 package errors
 
+// Errors : ...
 type Errors struct {
-	DATA_EMPTY_ERROR         map[string]interface{}
-	PASSWORD_NOT_VALID_ERROR map[string]interface{}
-	TOKEN_NOT_VALID_ERROR    map[string]interface{}
-	USER_NOT_EXISTS_ERROR    map[string]interface{}
-	USER_EXISTS_ERROR        map[string]interface{}
-	NOTEBOOK_DATA_NOT_VALID  map[string]interface{}
+	DataEmptyError            map[string]interface{}
+	PasswordNotValidError     map[string]interface{}
+	TokenNotValidError        map[string]interface{}
+	UserNotExistsError        map[string]interface{}
+	UserExistsError           map[string]interface{}
+	NotebookDataNotValidError map[string]interface{}
 }
 
+// GetErrorsData : ...
 func GetErrorsData() *Errors {
 	return &Errors{
-		DATA_EMPTY_ERROR: map[string]interface{}{
-			"ok": false, "message": "Wrong request, recheck API docs"},
+		DataEmptyError: map[string]interface{}{
+			"ok": false, "message": "Wrong request, recheck API docs",
+		},
 
-		PASSWORD_NOT_VALID_ERROR: map[string]interface{}{
-			"ok": false, "message": "Password not valid"},
+		PasswordNotValidError: map[string]interface{}{
+			"ok": false, "message": "Password not valid",
+		},
 
-		USER_NOT_EXISTS_ERROR: map[string]interface{}{
-			"ok": false, "message": "User not exists"},
+		UserNotExistsError: map[string]interface{}{
+			"ok": false, "message": "User not exists",
+		},
 
-		USER_EXISTS_ERROR: map[string]interface{}{
-			"ok": false, "message": "User exists"},
+		UserExistsError: map[string]interface{}{
+			"ok": false, "message": "User exists",
+		},
 
-		NOTEBOOK_DATA_NOT_VALID: map[string]interface{}{
-			"ok": false, "message": "Wrong request, recheck API docs"},
+		NotebookDataNotValidError: map[string]interface{}{
+			"ok": false, "message": "Wrong request, recheck API docs",
+		},
 
-		TOKEN_NOT_VALID_ERROR: map[string]interface{}{
-			"ok": false, "message": "Token not valid"},
+		TokenNotValidError: map[string]interface{}{
+			"ok": false, "message": "Token not valid",
+		},
 	}
 }

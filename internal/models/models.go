@@ -1,5 +1,6 @@
 package models
 
+// User : ...
 type User struct {
 	ID       uint   `json:"id"`
 	Username string `json:"username"`
@@ -7,22 +8,13 @@ type User struct {
 	Token    string `json:"token"`
 }
 
+// Note : ...
 type Note struct {
 	ID      uint   `json:"id"`
 	Hash    string `json:"hash"`
 	Owner   string `json:"owner"`
 	Title   string `json:"title"`
 	Text    string `json:"text"`
-	Checked string `json:"checked"`
-	Parent  string `json:"parent"`
-}
-
-type Data struct {
-	ID      uint
-	Hash    string
-	Title   string
-	Text    string
-	Checked bool
-	Owner   string
-	Parent  int
+	Checked bool   `json:"checked"`
+	Parent  int    `json:"parent"`
 }

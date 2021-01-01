@@ -13,60 +13,73 @@ import (
 	"github.com/rustzz/todos/internal/models"
 )
 
+// SigninUser : ...
 func SigninUser(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
-	var user_local = models.User{
+	var userLocal = models.User{
 		Username: request.FormValue("username"),
-		Password: request.FormValue("password")}
+		Password: request.FormValue("password"),
+	}
 
-	checkerr := checkers.NotebookCheckerCoollection(&user_local, "am_signin")
-	if checkerr != nil {
-		json.NewEncoder(writer).Encode(checkerr)
+	checkErr := checkers.NotebookCheckerCoollection(&userLocal, "am_signin")
+	if checkErr != nil {
+		json.NewEncoder(writer).Encode(checkErr)
 		return
 	}
 
 	var hash hash.Hash = sha256.New()
 	hash.Write([]byte(uuid.New().String()))
-	var byte_token []byte = hash.Sum(nil)
-	var token string = hex.EncodeToString(byte_token)
+	var byteToken []byte = hash.Sum(nil)
+	var token string = hex.EncodeToString(byteToken)
 
 	db := database.ConnectDatabase()
-	db.Table("users").Model(&models.User{}).Where("username = ?", user_local.Username).
+
+	db.Table("users").
+		Model(&models.User{}).
+		Where("username = ?", userLocal.Username).
 		Update("token", token)
+
 	dbConn, _ := db.DB()
 	dbConn.Close()
 
-	json.NewEncoder(writer).Encode(map[string]interface{}{"ok": true, "token": token})
+	json.NewEncoder(writer).Encode(
+		map[string]interface{}{"ok": true, "token": token})
 	return
 }
 
+// SignupUser : ...
 func SignupUser(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 
-	var user_local = models.User{
+	var userLocal = models.User{
 		Username: request.FormValue("username"),
-		Password: request.FormValue("password")}
+		Password: request.FormValue("password"),
+	}
 
-	checkerr := checkers.NotebookCheckerCoollection(&user_local, "am_signup")
-	if checkerr != nil {
-		json.NewEncoder(writer).Encode(checkerr)
+	checkErr := checkers.NotebookCheckerCoollection(&userLocal, "am_signup")
+	if checkErr != nil {
+		json.NewEncoder(writer).Encode(checkErr)
 		return
 	}
 
 	var hash hash.Hash = sha256.New()
 	hash.Write([]byte(uuid.New().String()))
-	var byte_token []byte = hash.Sum(nil)
-	var token string = hex.EncodeToString(byte_token)
+	var byteToken []byte = hash.Sum(nil)
+	var token string = hex.EncodeToString(byteToken)
 
 	db := database.ConnectDatabase()
-	db.Table("users").Create(&models.User{
-		Username: user_local.Username,
-		Password: user_local.Password,
-		Token:    token})
+
+	db.Table("users").
+		Create(&models.User{
+			Username: userLocal.Username,
+			Password: userLocal.Password,
+			Token:    token})
+
 	dbConn, _ := db.DB()
 	dbConn.Close()
 
-	json.NewEncoder(writer).Encode(map[string]interface{}{"ok": true, "token": token})
+	json.NewEncoder(writer).Encode(
+		map[string]interface{}{"ok": true, "token": token})
 	return
 }
