@@ -12,8 +12,9 @@ var apiErrors = errs.GetErrorsData()
 
 // UserExists : ...
 func UserExists(user *models.User) bool {
-	db := database.ConnectDatabase()
 	var userDB models.User
+
+	db := database.ConnectDatabase()
 	if err := db.Table("users").
 		First(&userDB, "username = ?", user.Username).Error; err != nil {
 
@@ -51,8 +52,9 @@ func DataValid(user *models.User, method string) bool {
 
 // PasswordValid : ...
 func PasswordValid(user *models.User) bool {
-	db := database.ConnectDatabase()
 	var userDB models.User
+
+	db := database.ConnectDatabase()
 	if err := db.Table("users").
 		Where("username = ?", user.Username).
 		Find(&userDB).Error; err == nil {
@@ -73,8 +75,9 @@ func PasswordValid(user *models.User) bool {
 
 // TokenValid : ...
 func TokenValid(user *models.User) bool {
-	db := database.ConnectDatabase()
 	var userDB models.User
+
+	db := database.ConnectDatabase()
 	if err := db.Table("users").
 		Where("username = ?", user.Username).
 		Find(&userDB).Error; err == nil {

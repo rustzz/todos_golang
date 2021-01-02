@@ -25,12 +25,12 @@ func GetNotes(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	db := database.ConnectDatabase()
 	var response = make(map[string]map[string]interface{})
 	var id int
 	var title, text string
 	var checked bool
 
+	db := database.ConnectDatabase()
 	result, _ := db.Table("notes").
 		Where("owner = ?", userLocal.Username).
 		Select("id, title, text, checked").
@@ -43,6 +43,7 @@ func GetNotes(writer http.ResponseWriter, request *http.Request) {
 			"title": title, "text": text, "checked": checked,
 		}
 	}
+
 	dbConn, _ := db.DB()
 	dbConn.Close()
 
@@ -82,6 +83,7 @@ func AddNote(writer http.ResponseWriter, request *http.Request) {
 // DeleteNote : ...
 func DeleteNote(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
+
 	var userLocal = models.User{
 		Username: request.FormValue("username"),
 		Token:    request.FormValue("token"),
@@ -93,7 +95,6 @@ func DeleteNote(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	db := database.ConnectDatabase()
 	var data models.Note
 	err := json.NewDecoder(request.Body).Decode(&data)
 	if err != nil {
@@ -102,6 +103,8 @@ func DeleteNote(writer http.ResponseWriter, request *http.Request) {
 	}
 
 	var notesCount int64
+
+	db := database.ConnectDatabase()
 	db.Table("notes").
 		Where("owner = ?", userLocal.Username).
 		Where("id = ?", data.ID).
@@ -139,7 +142,6 @@ func UpdateNote(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	db := database.ConnectDatabase()
 	var data models.Note
 	err := json.NewDecoder(request.Body).Decode(&data)
 	if err != nil {
@@ -147,6 +149,7 @@ func UpdateNote(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
+	db := database.ConnectDatabase()
 	db.Table("notes").
 		Where("owner = ?", userLocal.Username).
 		Where("id = ?", data.ID).

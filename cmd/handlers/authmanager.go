@@ -34,7 +34,6 @@ func SigninUser(writer http.ResponseWriter, request *http.Request) {
 	var token string = hex.EncodeToString(byteToken)
 
 	db := database.ConnectDatabase()
-
 	db.Table("users").
 		Model(&models.User{}).
 		Where("username = ?", userLocal.Username).
@@ -69,7 +68,6 @@ func SignupUser(writer http.ResponseWriter, request *http.Request) {
 	var token string = hex.EncodeToString(byteToken)
 
 	db := database.ConnectDatabase()
-
 	db.Table("users").
 		Create(&models.User{
 			Username: userLocal.Username,
