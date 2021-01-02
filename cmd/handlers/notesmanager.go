@@ -80,7 +80,6 @@ func AddNote(writer http.ResponseWriter, request *http.Request) {
 }
 
 // DeleteNote : ...
-// to fix: returns "ok: true" if nothing deleted
 func DeleteNote(writer http.ResponseWriter, request *http.Request) {
 	writer.Header().Set("Content-Type", "application/json")
 	var userLocal = models.User{
@@ -99,6 +98,17 @@ func DeleteNote(writer http.ResponseWriter, request *http.Request) {
 	err := json.NewDecoder(request.Body).Decode(&data)
 	if err != nil {
 		json.NewEncoder(writer).Encode(apiErrors.NotebookDataNotValidError)
+		return
+	}
+
+	var notesCount int64
+	db.Table("notes").
+		Where("owner = ?", userLocal.Username).
+		Where("id = ?", data.ID).
+		Count(&notesCount)
+
+	if notesCount < 1 {
+		json.NewEncoder(writer).Encode(apiErrors.NoteNotFoundError)
 		return
 	}
 

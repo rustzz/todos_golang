@@ -8,6 +8,8 @@ type Errors struct {
 	UserNotExistsError        map[string]interface{}
 	UserExistsError           map[string]interface{}
 	NotebookDataNotValidError map[string]interface{}
+	RateLimitError            map[string]interface{}
+	NoteNotFoundError         map[string]interface{}
 }
 
 // GetErrorsData : ...
@@ -35,6 +37,12 @@ func GetErrorsData() *Errors {
 
 		TokenNotValidError: map[string]interface{}{
 			"ok": false, "message": "Token not valid",
+		},
+		RateLimitError: map[string]interface{}{
+			"ok": false, "message": "You have reached maximum request limit",
+		},
+		NoteNotFoundError: map[string]interface{}{
+			"ok": false, "message": "Note with that id not found",
 		},
 	}
 }
