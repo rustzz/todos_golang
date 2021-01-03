@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	"github.com/rustzz/todos/cmd/routing"
 	"github.com/rustzz/todos/config"
 	"github.com/rustzz/todos/internal/database"
@@ -17,8 +18,15 @@ func main() {
 	config.Load()
 	database.Migrate()
 
-	handler := mux.NewRouter()
-	routing.InitRoutes(handler)
+	router := mux.NewRouter()
+	routing.InitRoutes(router)
+
+	cors := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
+	})
+
+	handler := cors.Handler(router)
 
 	log.Print("Server starting...")
 	log.Fatal(
