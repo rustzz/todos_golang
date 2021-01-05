@@ -1,18 +1,18 @@
 package database
 
 import (
-	"os"
 	"log"
+	"os"
 
-	"gorm.io/gorm"
-	"gorm.io/driver/mysql"
 	"github.com/rustzz/todos/internal/models"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 // ConnectDatabase : ...
-func ConnectDatabase() (db *gorm.DB) {
-	dsn := os.Getenv("DB_DSN")
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+func ConnectDatabase() *gorm.DB {
+	var dsn = os.Getenv("DB_DSN")
+	var db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
@@ -21,10 +21,10 @@ func ConnectDatabase() (db *gorm.DB) {
 
 // Migrate : ...
 func Migrate() {
-	db := ConnectDatabase()
+	var db = ConnectDatabase()
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Note{})
-	dbConn, _ := db.DB()
+	var dbConn, _ = db.DB()
 	dbConn.Close()
 	return
 }

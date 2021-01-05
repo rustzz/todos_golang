@@ -1,16 +1,16 @@
 package handlers
 
 import (
-	"hash"
-	"net/http"
+	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
-	"crypto/sha256"
+	"hash"
+	"net/http"
 
 	"github.com/google/uuid"
-	"github.com/rustzz/todos/internal/models"
 	"github.com/rustzz/todos/internal/checkers"
 	"github.com/rustzz/todos/internal/database"
+	"github.com/rustzz/todos/internal/models"
 )
 
 // SigninUser : ...
@@ -22,7 +22,7 @@ func SigninUser(writer http.ResponseWriter, request *http.Request) {
 		Password: request.FormValue("password"),
 	}
 
-	checkErr := checkers.NotebookCheckerCoollection(&userLocal, "am_signin")
+	var checkErr = checkers.NotebookCheckerCoollection(&userLocal, "am_signin")
 	if checkErr != nil {
 		json.NewEncoder(writer).Encode(checkErr)
 		return
@@ -33,13 +33,13 @@ func SigninUser(writer http.ResponseWriter, request *http.Request) {
 	var byteToken []byte = hash.Sum(nil)
 	var token string = hex.EncodeToString(byteToken)
 
-	db := database.ConnectDatabase()
+	var db = database.ConnectDatabase()
 	db.Table("users").
 		Model(&models.User{}).
 		Where("username = ?", userLocal.Username).
 		Update("token", token)
 
-	dbConn, _ := db.DB()
+	var dbConn, _ = db.DB()
 	dbConn.Close()
 
 	json.NewEncoder(writer).Encode(
@@ -56,7 +56,7 @@ func SignupUser(writer http.ResponseWriter, request *http.Request) {
 		Password: request.FormValue("password"),
 	}
 
-	checkErr := checkers.NotebookCheckerCoollection(&userLocal, "am_signup")
+	var checkErr = checkers.NotebookCheckerCoollection(&userLocal, "am_signup")
 	if checkErr != nil {
 		json.NewEncoder(writer).Encode(checkErr)
 		return
@@ -67,14 +67,14 @@ func SignupUser(writer http.ResponseWriter, request *http.Request) {
 	var byteToken []byte = hash.Sum(nil)
 	var token string = hex.EncodeToString(byteToken)
 
-	db := database.ConnectDatabase()
+	var db = database.ConnectDatabase()
 	db.Table("users").
 		Create(&models.User{
 			Username: userLocal.Username,
 			Password: userLocal.Password,
 			Token:    token})
 
-	dbConn, _ := db.DB()
+	var dbConn, _ = db.DB()
 	dbConn.Close()
 
 	json.NewEncoder(writer).Encode(

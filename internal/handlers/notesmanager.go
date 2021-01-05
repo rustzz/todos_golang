@@ -1,13 +1,13 @@
 package handlers
 
 import (
-	"strconv"
-	"net/http"
 	"encoding/json"
+	"net/http"
+	"strconv"
 
-	"github.com/rustzz/todos/internal/models"
 	"github.com/rustzz/todos/internal/checkers"
 	"github.com/rustzz/todos/internal/database"
+	"github.com/rustzz/todos/internal/models"
 )
 
 // GetNotes : ...
@@ -19,7 +19,7 @@ func GetNotes(writer http.ResponseWriter, request *http.Request) {
 		Token:    request.FormValue("token"),
 	}
 
-	checkErr := checkers.NotebookCheckerCoollection(&userLocal, "notebook")
+	var checkErr = checkers.NotebookCheckerCoollection(&userLocal, "notebook")
 	if checkErr != nil {
 		json.NewEncoder(writer).Encode(checkErr)
 		return
@@ -30,8 +30,8 @@ func GetNotes(writer http.ResponseWriter, request *http.Request) {
 	var title, text string
 	var checked bool
 
-	db := database.ConnectDatabase()
-	result, _ := db.Table("notes").
+	var db = database.ConnectDatabase()
+	var result, _ = db.Table("notes").
 		Where("owner = ?", userLocal.Username).
 		Select("id, title, text, checked").
 		Rows()
@@ -44,7 +44,7 @@ func GetNotes(writer http.ResponseWriter, request *http.Request) {
 		}
 	}
 
-	dbConn, _ := db.DB()
+	var dbConn, _ = db.DB()
 	dbConn.Close()
 
 	json.NewEncoder(writer).Encode(
@@ -61,22 +61,22 @@ func AddNote(writer http.ResponseWriter, request *http.Request) {
 		Token:    request.FormValue("token"),
 	}
 
-	checkErr := checkers.NotebookCheckerCoollection(&userLocal, "notebook")
+	var checkErr = checkers.NotebookCheckerCoollection(&userLocal, "notebook")
 	if checkErr != nil {
 		json.NewEncoder(writer).Encode(checkErr)
 		return
 	}
 
-	db := database.ConnectDatabase()
+	var note = models.Note{Owner: userLocal.Username}
+	var db = database.ConnectDatabase()
 	db.Table("notes").
-		Create(&models.Note{
-			Owner: userLocal.Username})
+		Create(&note)
 
-	dbConn, _ := db.DB()
+	var dbConn, _ = db.DB()
 	dbConn.Close()
 
 	json.NewEncoder(writer).Encode(
-		map[string]interface{}{"ok": true})
+		map[string]interface{}{"ok": true, "id": note.ID})
 	return
 }
 
@@ -89,14 +89,14 @@ func DeleteNote(writer http.ResponseWriter, request *http.Request) {
 		Token:    request.FormValue("token"),
 	}
 
-	checkErr := checkers.NotebookCheckerCoollection(&userLocal, "notebook")
+	var checkErr = checkers.NotebookCheckerCoollection(&userLocal, "notebook")
 	if checkErr != nil {
 		json.NewEncoder(writer).Encode(checkErr)
 		return
 	}
 
 	var data models.Note
-	err := json.NewDecoder(request.Body).Decode(&data)
+	var err = json.NewDecoder(request.Body).Decode(&data)
 	if err != nil {
 		json.NewEncoder(writer).Encode(apiErrors.NotebookDataNotValidError)
 		return
@@ -104,7 +104,7 @@ func DeleteNote(writer http.ResponseWriter, request *http.Request) {
 
 	var notesCount int64
 
-	db := database.ConnectDatabase()
+	var db = database.ConnectDatabase()
 	db.Table("notes").
 		Where("owner = ?", userLocal.Username).
 		Where("id = ?", data.ID).
@@ -119,7 +119,7 @@ func DeleteNote(writer http.ResponseWriter, request *http.Request) {
 		Where("owner = ?", userLocal.Username).
 		Delete(&models.Note{}, "id = ?", data.ID)
 
-	dbConn, _ := db.DB()
+	var dbConn, _ = db.DB()
 	dbConn.Close()
 
 	json.NewEncoder(writer).Encode(
@@ -136,20 +136,20 @@ func UpdateNote(writer http.ResponseWriter, request *http.Request) {
 		Token:    request.FormValue("token"),
 	}
 
-	checkErr := checkers.NotebookCheckerCoollection(&userLocal, "notebook")
+	var checkErr = checkers.NotebookCheckerCoollection(&userLocal, "notebook")
 	if checkErr != nil {
 		json.NewEncoder(writer).Encode(checkErr)
 		return
 	}
 
 	var data models.Note
-	err := json.NewDecoder(request.Body).Decode(&data)
+	var err = json.NewDecoder(request.Body).Decode(&data)
 	if err != nil {
 		json.NewEncoder(writer).Encode(apiErrors.NotebookDataNotValidError)
 		return
 	}
 
-	db := database.ConnectDatabase()
+	var db = database.ConnectDatabase()
 	db.Table("notes").
 		Where("owner = ?", userLocal.Username).
 		Where("id = ?", data.ID).
@@ -158,7 +158,7 @@ func UpdateNote(writer http.ResponseWriter, request *http.Request) {
 			Text:    data.Text,
 			Checked: data.Checked})
 
-	dbConn, _ := db.DB()
+	var dbConn, _ = db.DB()
 	dbConn.Close()
 
 	json.NewEncoder(writer).Encode(

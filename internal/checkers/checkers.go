@@ -3,9 +3,9 @@ package checkers
 import (
 	"strings"
 
-	"github.com/rustzz/todos/internal/models"
 	"github.com/rustzz/todos/internal/database"
 	errs "github.com/rustzz/todos/internal/errors"
+	"github.com/rustzz/todos/internal/models"
 )
 
 var apiErrors = errs.GetErrorsData()
@@ -14,15 +14,15 @@ var apiErrors = errs.GetErrorsData()
 func UserExists(user *models.User) bool {
 	var userDB models.User
 
-	db := database.ConnectDatabase()
+	var db = database.ConnectDatabase()
 	if err := db.Table("users").
 		First(&userDB, "username = ?", user.Username).Error; err != nil {
 
-		dbConn, _ := db.DB()
+		var dbConn, _ = db.DB()
 		dbConn.Close()
 		return false
 	}
-	dbConn, _ := db.DB()
+	var dbConn, _ = db.DB()
 	dbConn.Close()
 	return true
 }
@@ -54,21 +54,21 @@ func DataValid(user *models.User, method string) bool {
 func PasswordValid(user *models.User) bool {
 	var userDB models.User
 
-	db := database.ConnectDatabase()
+	var db = database.ConnectDatabase()
 	if err := db.Table("users").
 		Where("username = ?", user.Username).
 		Find(&userDB).Error; err == nil {
 
 		if userDB.Password == user.Password {
-			dbConn, _ := db.DB()
+			var dbConn, _ = db.DB()
 			dbConn.Close()
 			return true
 		}
-		dbConn, _ := db.DB()
+		var dbConn, _ = db.DB()
 		dbConn.Close()
 		return false
 	}
-	dbConn, _ := db.DB()
+	var dbConn, _ = db.DB()
 	dbConn.Close()
 	return false
 }
@@ -77,21 +77,21 @@ func PasswordValid(user *models.User) bool {
 func TokenValid(user *models.User) bool {
 	var userDB models.User
 
-	db := database.ConnectDatabase()
+	var db = database.ConnectDatabase()
 	if err := db.Table("users").
 		Where("username = ?", user.Username).
 		Find(&userDB).Error; err == nil {
 
 		if userDB.Token == user.Token {
-			dbConn, _ := db.DB()
+			var dbConn, _ = db.DB()
 			dbConn.Close()
 			return true
 		}
-		dbConn, _ := db.DB()
+		var dbConn, _ = db.DB()
 		dbConn.Close()
 		return false
 	}
-	dbConn, _ := db.DB()
+	var dbConn, _ = db.DB()
 	dbConn.Close()
 	return false
 }
