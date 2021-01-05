@@ -3,13 +3,13 @@ package errors
 // Errors : ...
 type Errors struct {
 	DataEmptyError            map[string]interface{}
-	PasswordNotValidError     map[string]interface{}
+	RateLimitError            map[string]interface{}
+	UserExistsError           map[string]interface{}
+	NoteNotFoundError         map[string]interface{}
 	TokenNotValidError        map[string]interface{}
 	UserNotExistsError        map[string]interface{}
-	UserExistsError           map[string]interface{}
+	PasswordNotValidError     map[string]interface{}
 	NotebookDataNotValidError map[string]interface{}
-	RateLimitError            map[string]interface{}
-	NoteNotFoundError         map[string]interface{}
 }
 
 // GetErrorsData : ...

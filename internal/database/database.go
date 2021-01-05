@@ -2,10 +2,11 @@ package database
 
 import (
 	"os"
+	"log"
 
-	"github.com/rustzz/todos/internal/models"
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/driver/mysql"
+	"github.com/rustzz/todos/internal/models"
 )
 
 // ConnectDatabase : ...
@@ -13,7 +14,7 @@ func ConnectDatabase() (db *gorm.DB) {
 	dsn := os.Getenv("DB_DSN")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic("Failed to connect database")
+		log.Fatalln(err.Error())
 	}
 	return db
 }

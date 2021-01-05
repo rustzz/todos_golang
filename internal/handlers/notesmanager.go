@@ -1,13 +1,13 @@
 package handlers
 
 import (
-	"encoding/json"
-	"net/http"
 	"strconv"
+	"net/http"
+	"encoding/json"
 
+	"github.com/rustzz/todos/internal/models"
 	"github.com/rustzz/todos/internal/checkers"
 	"github.com/rustzz/todos/internal/database"
-	"github.com/rustzz/todos/internal/models"
 )
 
 // GetNotes : ...

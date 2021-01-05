@@ -3,9 +3,9 @@ package checkers
 import (
 	"strings"
 
-	errs "github.com/rustzz/todos/cmd/errors"
-	"github.com/rustzz/todos/internal/database"
 	"github.com/rustzz/todos/internal/models"
+	"github.com/rustzz/todos/internal/database"
+	errs "github.com/rustzz/todos/internal/errors"
 )
 
 var apiErrors = errs.GetErrorsData()

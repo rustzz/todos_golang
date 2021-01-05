@@ -1,17 +1,17 @@
 package main
 
 import (
+	"os"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
-	"github.com/gorilla/mux"
 	"github.com/rs/cors"
-	"github.com/rustzz/todos/cmd/routing"
+	"github.com/gorilla/mux"
 	"github.com/rustzz/todos/config"
-	"github.com/rustzz/todos/internal/database"
 	"github.com/rustzz/todos/pkg/ratelimit"
+	"github.com/rustzz/todos/internal/routing"
+	"github.com/rustzz/todos/internal/database"
 )
 
 func main() {

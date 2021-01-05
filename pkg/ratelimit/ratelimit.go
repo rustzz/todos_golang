@@ -1,13 +1,13 @@
 package ratelimit
 
 import (
-	"encoding/json"
-	"net/http"
 	"time"
+	"net/http"
+	"encoding/json"
 
 	"github.com/didip/tollbooth"
 	"github.com/didip/tollbooth/limiter"
-	errs "github.com/rustzz/todos/cmd/errors"
+	errs "github.com/rustzz/todos/internal/errors"
 )
 
 var apiErrors = errs.GetErrorsData()
@@ -19,7 +19,7 @@ func Check(next http.Handler) http.Handler {
 	 */
 	limit := tollbooth.NewLimiter(60, &limiter.ExpirableOptions{DefaultExpirationTTL: time.Minute})
 	limit.SetIPLookups([]string{"RemoteAddr", "X-Forwarded-For", "X-Real-IP"})
-	limit.SetMethods([]string{"GET", "POST"})
+	limit.SetMethods([]string{http.MethodGet, http.MethodPost})
 	middle := func(writer http.ResponseWriter, request *http.Request) {
 		httpError := tollbooth.LimitByRequest(limit, writer, request)
 		if httpError != nil {

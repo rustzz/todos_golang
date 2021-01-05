@@ -1,16 +1,16 @@
 package handlers
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
-	"encoding/json"
 	"hash"
 	"net/http"
+	"encoding/hex"
+	"encoding/json"
+	"crypto/sha256"
 
 	"github.com/google/uuid"
+	"github.com/rustzz/todos/internal/models"
 	"github.com/rustzz/todos/internal/checkers"
 	"github.com/rustzz/todos/internal/database"
-	"github.com/rustzz/todos/internal/models"
 )
 
 // SigninUser : ...

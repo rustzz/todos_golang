@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"log"
 	"os/user"
 
 	"github.com/joho/godotenv"
@@ -9,10 +10,10 @@ import (
 
 // Load : ...
 func Load() {
-	user, err := user.Current()
+	currentUser, err := user.Current()
 	if err != nil {
-		panic(err)
+		log.Fatalln(err.Error())
 	}
-	godotenv.Load(fmt.Sprintf("%s/.cenv", user.HomeDir))
+	godotenv.Load(fmt.Sprintf("%s/.cenv", currentUser.HomeDir))
 	return
 }
