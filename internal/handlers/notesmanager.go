@@ -19,7 +19,7 @@ func GetNotes(writer http.ResponseWriter, request *http.Request) {
 		Token:    request.FormValue("token"),
 	}
 
-	var checkErr = checkers.NotebookCheckerCoollection(&userLocal, "notebook")
+	var checkErr = checkers.CheckerCoollection(&userLocal, "notebook")
 	if checkErr != nil {
 		json.NewEncoder(writer).Encode(checkErr)
 		return
@@ -61,7 +61,7 @@ func AddNote(writer http.ResponseWriter, request *http.Request) {
 		Token:    request.FormValue("token"),
 	}
 
-	var checkErr = checkers.NotebookCheckerCoollection(&userLocal, "notebook")
+	var checkErr = checkers.CheckerCoollection(&userLocal, "notebook")
 	if checkErr != nil {
 		json.NewEncoder(writer).Encode(checkErr)
 		return
@@ -89,7 +89,7 @@ func DeleteNote(writer http.ResponseWriter, request *http.Request) {
 		Token:    request.FormValue("token"),
 	}
 
-	var checkErr = checkers.NotebookCheckerCoollection(&userLocal, "notebook")
+	var checkErr = checkers.CheckerCoollection(&userLocal, "notebook")
 	if checkErr != nil {
 		json.NewEncoder(writer).Encode(checkErr)
 		return
@@ -136,7 +136,7 @@ func UpdateNote(writer http.ResponseWriter, request *http.Request) {
 		Token:    request.FormValue("token"),
 	}
 
-	var checkErr = checkers.NotebookCheckerCoollection(&userLocal, "notebook")
+	var checkErr = checkers.CheckerCoollection(&userLocal, "notebook")
 	if checkErr != nil {
 		json.NewEncoder(writer).Encode(checkErr)
 		return

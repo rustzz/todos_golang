@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"hash"
+	"log"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -22,7 +23,7 @@ func SigninUser(writer http.ResponseWriter, request *http.Request) {
 		Password: request.FormValue("password"),
 	}
 
-	var checkErr = checkers.NotebookCheckerCoollection(&userLocal, "am_signin")
+	var checkErr = checkers.CheckerCoollection(&userLocal, "am_signin")
 	if checkErr != nil {
 		json.NewEncoder(writer).Encode(checkErr)
 		return
@@ -56,7 +57,7 @@ func SignupUser(writer http.ResponseWriter, request *http.Request) {
 		Password: request.FormValue("password"),
 	}
 
-	var checkErr = checkers.NotebookCheckerCoollection(&userLocal, "am_signup")
+	var checkErr = checkers.CheckerCoollection(&userLocal, "am_signup")
 	if checkErr != nil {
 		json.NewEncoder(writer).Encode(checkErr)
 		return
@@ -79,5 +80,26 @@ func SignupUser(writer http.ResponseWriter, request *http.Request) {
 
 	json.NewEncoder(writer).Encode(
 		map[string]interface{}{"ok": true, "token": token})
+	return
+}
+
+// CheckTokenValid : ...
+func CheckTokenValid(writer http.ResponseWriter, request *http.Request) {
+	writer.Header().Set("Content-Type", "application/json")
+
+	var userLocal = models.User{
+		Username: request.FormValue("username"),
+		Token:    request.FormValue("token"),
+	}
+
+	log.Println(userLocal)
+
+	if !checkers.DataValid(&userLocal, "notebook") { // not notebook
+		json.NewEncoder(writer).Encode(apiErrors.DataEmptyError)
+		return
+	}
+
+	json.NewEncoder(writer).Encode(
+		map[string]interface{}{"ok": checkers.TokenValid(&userLocal)})
 	return
 }
