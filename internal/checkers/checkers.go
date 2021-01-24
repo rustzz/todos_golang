@@ -97,7 +97,7 @@ func TokenValid(user *models.User) bool {
 }
 
 // CheckerCoollection : ...
-func CheckerCoollection(user *models.User, method string) interface{} {
+func CheckerCollection(user *models.User, method string) interface{} {
 	if method == "notebook" {
 		if !DataValid(user, "notebook") {
 			return apiErrors.NotebookDataNotValidError

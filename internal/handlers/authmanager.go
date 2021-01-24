@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"hash"
-	"log"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -23,7 +22,7 @@ func SigninUser(writer http.ResponseWriter, request *http.Request) {
 		Password: request.FormValue("password"),
 	}
 
-	var checkErr = checkers.CheckerCoollection(&userLocal, "am_signin")
+	var checkErr = checkers.CheckerCollection(&userLocal, "am_signin")
 	if checkErr != nil {
 		json.NewEncoder(writer).Encode(checkErr)
 		return
@@ -57,7 +56,7 @@ func SignupUser(writer http.ResponseWriter, request *http.Request) {
 		Password: request.FormValue("password"),
 	}
 
-	var checkErr = checkers.CheckerCoollection(&userLocal, "am_signup")
+	var checkErr = checkers.CheckerCollection(&userLocal, "am_signup")
 	if checkErr != nil {
 		json.NewEncoder(writer).Encode(checkErr)
 		return
@@ -91,8 +90,6 @@ func CheckTokenValid(writer http.ResponseWriter, request *http.Request) {
 		Username: request.FormValue("username"),
 		Token:    request.FormValue("token"),
 	}
-
-	log.Println(userLocal)
 
 	if !checkers.DataValid(&userLocal, "notebook") { // not notebook
 		json.NewEncoder(writer).Encode(apiErrors.DataEmptyError)
